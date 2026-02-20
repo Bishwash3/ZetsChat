@@ -6,22 +6,14 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://zets-chat.vercel.app"
-];
+const corsOptions = {
+	origin: process.env.FRONTEND_URL,
+	methods: ["GET", "POST", "DELETE"],
+	allowedHeaders: ["Content-Type", "Authorization"],
+	credentials: true,
+};
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 3000;
